@@ -1,5 +1,190 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+* {
+  transition: 300ms;
+  font-family: "Inter", sans-serif;
+}
+
+.bg-high {
+  background-color: #367aff;
+}
+
+.heading {
+  /* font-size: 40px;
+  font-weight: 700;
+  line-height: 44px;
+  letter-spacing: -0.04em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none; */
+}
+
+/* floating label */
+/* .label-container{
+  width: 100%;
+}
+
+.entryarea{
+  position:relative;
+  height: 80px;
+  line-height: 80px;
+}
+
+input{
+  position: absolute;
+  width: 100%;
+  outline: none;
+  font-size: 2.2em;
+  padding: 0 30px;
+  line-height: 80px;
+  border-radius: 10px;
+  border: 2px solid green;
+}
+
+.labelinline{
+  position: absolute;
+  font-size: 1.6em;
+  color: black;
+  margin: 0 20px;
+  padding: 0 25px;
+  background-color: white;border: 1px solid;
+}
+
+input:focus, input:valid{
+  color: green;
+  border: 4px solid green;
+}
+
+input:focus+ .labelinline,
+input:valid + .labelinline{
+  color: green;
+  height: 30px;
+  line-height: 30px;
+  transform: translate(-15px, -16px) scale(0.88);
+  z-index: 1111;
+} */
+
+.signup-form {
+  .sent-to {
+    cursor: pointer;
+    span {
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      background-color: #fff;
+      font-size: 13px;
+      padding: 0 5px;
+    }
+  }
+
+  label {
+    margin: 5px 0;
+    position: relative;
+    width: 100%;
+    height: 50.8px;
+    /* height: 30px; */
+
+    input {
+      outline: none;
+      border-radius: 10px;
+      border: 1.9px solid #d9d9d9;
+      position: absolute;
+      width: 100%;
+      font-size: 1rem;
+      padding: 10px 15px;
+      color: #fff;
+      z-index: 0;
+    }
+
+    span {
+      position: absolute;
+      font-size: 1rem;
+      color: #333;
+      top: 10px;
+      left: 15px;
+      z-index: 999;
+    }
+
+    input:user-invalid {
+      border-color: #ff3a3a;
+      color: #ff3a3a;
+    }
+
+    input:user-invalid + span {
+      color: #ff3a3a;
+      top: -10px;
+      background-color: #fff;
+      padding: 0 2px;
+      font-size: 0.9rem;
+    }
+
+    input:focus,
+    input:valid {
+      border-color: #367aff;
+      color: #333;
+    }
+
+    input:focus + span,
+    input:valid + span {
+      font-size: 0.8rem;
+      top: -10px;
+      color: #367aff;
+      z-index: 1111;
+      border-color: #367aff;
+      background-color: #fff;
+      padding: 0 2px;
+    }
+
+    i {
+      position: absolute;
+      right: 16px;
+      top: 15px;
+      color: #333;
+      cursor: pointer;
+    }
+  }
+
+  button {
+    border-radius: 8px;
+  }
+}
+
+.rounded-round {
+  border-radius: 8px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.background-flower {
+  height: 100%;
+  width: 100%;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  overflow: hidden;
+}
+
+.left-box {
+  height: 97vh;
+
+  .logo {
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    width: 60px;
+  }
+}
+
+.left-box > div {
+  width: 70%;
+}
+
+@media screen and (max-width: 1000px) {
+  .left-box > div {
+    width: 100%;
+  }
 }
