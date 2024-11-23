@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { OtpVarify } from "../components/OtpVarify";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import { useAppSelector } from "../redux/hooks";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface SignUpForm {
   name: string;
@@ -27,6 +30,7 @@ const SignUp = () => {
   const [doneSignup, setDoneSignup] = useState<boolean>(false);
   const [url, setUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
     try {
@@ -60,6 +64,15 @@ const SignUp = () => {
   useEffect(() => {
     setUrl(import.meta.env.VITE_SERVER);
   }, []);
+
+  const loggedUser = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    if (loggedUser.token) {
+      navigate("/");
+    }
+  });
+  
   return (
     <main>
       <ToastContainer />
@@ -165,9 +178,9 @@ const SignUp = () => {
                   <div className="py-3">
                     <p className="text-secondary fs-6 text-center">
                       Already have an account??{" "}
-                      <a className="text-primary" href="/signin">
+                      <Link className="text-primary" to="/signin">
                         Sign in
-                      </a>
+                      </Link>
                     </p>
                   </div>
                 </div>

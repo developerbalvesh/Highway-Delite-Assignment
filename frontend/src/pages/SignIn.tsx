@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { OtpVarify } from "../components/OtpVarify";
-import axios, { interceptors } from "axios";
+import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import { Link } from "react-router-dom";
-import { getUserLogin, setUserLogin } from "../helper/userHelper";
+import { Link, useNavigate } from "react-router-dom";
+import { setUserLogin } from "../helper/userHelper";
+import { useDispatch } from "react-redux";
+import { set } from "../redux/slices/userInfo";
+import { useAppSelector } from "../redux/hooks";
 
 interface SignUpForm {
   email: string;
@@ -23,6 +25,7 @@ interface SignInResp {
     name: string;
     date_of_birth: string;
     email: string;
+    token: string;
   };
 }
 
@@ -33,13 +36,23 @@ const SignIn = () => {
     otp: "",
   });
 
+  const loggedUser = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    if (loggedUser.token) {
+      navigate("/");
+    }
+  });
+
   const [url, setUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [otpSent, setOtpSent] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: any) => {
     try {
-      // setLoading(true);
+      setLoading(true);
       e.preventDefault();
 
       const { data } = await axios.post<SignInResp>(
@@ -51,6 +64,8 @@ const SignIn = () => {
         toast.success(data.message);
         console.log(data);
         setUserLogin(data.user);
+        dispatch(set(data.user));
+        navigate("/");
       } else {
         setLoading(false);
         toast.error(data.message);
@@ -176,9 +191,9 @@ const SignIn = () => {
                   <div className="py-3">
                     <p className="text-secondary fs-6 text-center">
                       Need an account??{" "}
-                      <a className="text-primary" href="/signup">
+                      <Link className="text-primary" to="/signup">
                         Create one
-                      </a>
+                      </Link>
                     </p>
                   </div>
                 </div>

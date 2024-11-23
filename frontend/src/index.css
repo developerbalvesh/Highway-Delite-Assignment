@@ -204,3 +204,23 @@ input:valid + .labelinline{
     transform: rotate(360deg);
   }
 }
+
+.shadow-full{
+  box-shadow: 0 0 10px #c7c7c7;
+}
+
+.right-flower{
+  height: 95vh;
+}
+
+.note{
+  border-bottom: 2px solid #c7c7c7;
+  .fa-trash-can:hover{
+    cursor: pointer;
+    color: #ff3a3a;
+  }
+}
+
+.note:hover{
+  border-bottom: 2px solid #367aff;
+}

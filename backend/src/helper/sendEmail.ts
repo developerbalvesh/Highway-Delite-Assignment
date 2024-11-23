@@ -1,8 +1,9 @@
 import nodemailer from 'nodemailer'
 
-export const sendOtpEmail = async (otp:number, email: string):Promise<any> => {
+export const sendOtpEmail = async (otp: number, email: string): Promise<any> => {
     const html = `<h3>Please enter below OTP to verify your email:</h3><h1>${otp}</h1>`
 
+    const pass = process.env.EMAIL_PASS;
     // send mail start
     const auth = nodemailer.createTransport({
         service: "gmail",
@@ -10,7 +11,7 @@ export const sendOtpEmail = async (otp:number, email: string):Promise<any> => {
         port: 465,
         auth: {
             user: "pskbalvesh@gmail.com",
-            pass: "nrymsoxqiyxyxuqd"
+            pass
         }
     });
 
@@ -24,7 +25,7 @@ export const sendOtpEmail = async (otp:number, email: string):Promise<any> => {
     auth.sendMail(receiver, (error, emailResponse) => {
         if (error) {
             throw error;
-        }else{
+        } else {
             console.log("success!");
         }
         // response.end();

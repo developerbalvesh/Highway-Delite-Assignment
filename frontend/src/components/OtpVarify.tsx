@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface Props {
   email: string;
@@ -17,6 +18,7 @@ export const OtpVarify: React.FC<Props> = (props) => {
   const [otp, setOtp] = useState<string>("");
   const [url, setUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setEmail(props.email);
@@ -37,6 +39,7 @@ export const OtpVarify: React.FC<Props> = (props) => {
       );
       if (data.success) {
         toast.success(data.message);
+        navigate("/signin")
       } else {
         setLoading(false);
         toast.error(data.message);
