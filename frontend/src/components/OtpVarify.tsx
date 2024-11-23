@@ -6,29 +6,43 @@ interface Props {
   email: string;
 }
 
+interface HandleOtpResponse {
+  success: boolean;
+  message: string;
+}
+
 export const OtpVarify: React.FC<Props> = (props) => {
   const [showPass, setShowPass] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [otp, setOtp] = useState<string>("");
-  const [url, setUrl] = useState<string>("")
+  const [url, setUrl] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setEmail(props.email);
-    setUrl(import.meta.env.VITE_SERVER)
+    setUrl(import.meta.env.VITE_SERVER);
   }, []);
 
   const handleOtpSend = async (e: any) => {
     try {
+      setLoading(true);
       e.preventDefault();
-      console.log(email, otp)
-      const { data } = await axios.post(url+"/auth/validate-otp", { email, otp });
-        if(data.success){
-            toast.success(data.message)
+      console.log(email, otp);
+      const { data } = await axios.post<HandleOtpResponse>(
+        url + "/auth/validate-otp",
+        {
+          email,
+          otp,
         }
-        else{
-            toast.error(data.message)
-        }
+      );
+      if (data.success) {
+        toast.success(data.message);
+      } else {
+        setLoading(false);
+        toast.error(data.message);
+      }
     } catch (error) {
+      setLoading(false);
       console.log("Internal Error");
       toast.error("Internal Error");
     }
@@ -54,8 +68,15 @@ export const OtpVarify: React.FC<Props> = (props) => {
             className={`fa-regular fa-eye${showPass ? "" : "-slash"}`}
           ></i>
         </label>
-        <button className="btn bg-high text-white fw-bold py-3 w-100">
-          Validate Email
+        <button
+          disabled={loading}
+          className="btn bg-high text-white fw-bold py-3 w-100"
+        >
+          {loading ? (
+            <i className="fa-solid fa-circle-notch rotate-360"></i>
+          ) : (
+            "Validate Email"
+          )}
         </button>
       </form>
     </>

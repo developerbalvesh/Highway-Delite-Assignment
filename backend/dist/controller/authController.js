@@ -172,4 +172,80 @@ export const validateOtp = async (req, res) => {
         });
     }
 };
+export const sendOtpSigninController = async (req, res) => {
+    try {
+        const email = req.params.email;
+        const exist = await userModel.findOne({ email });
+        if (!exist) {
+            return res.status(200).send({
+                success: false,
+                message: "Email not registered"
+            });
+        }
+        console.log(email);
+        const otp = await Math.floor(Math.random() * (9999 - 1000) + 1000);
+        await sendOtpEmail(otp, email);
+        const otp_token = await hashPassword(otp + "");
+        await userModel.findByIdAndUpdate(exist._id, { otp_token }, { new: true });
+        res.status(200).send({
+            success: true,
+            message: `Otp sent to ${email}`
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).send({
+            success: false,
+            error,
+            message: "Internal server error"
+        });
+    }
+};
+export const otpSigninController = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+        if (!email || !otp) {
+            return res.status(200).send({
+                success: false,
+                message: "Empty field not allowed"
+            });
+        }
+        const exist = await userModel.findOne({ email });
+        if (!exist) {
+            return res.status(200).send({
+                success: false,
+                message: "Email is not registered!"
+            });
+        }
+        const valid = await comparePassword(otp, exist.otp_token);
+        if (!valid) {
+            return res.status(200).send({
+                success: false,
+                message: "Incorrect OTP"
+            });
+        }
+        const jwt_secret = await process.env.JWT_SECRET;
+        const token = await JWT.sign({ _id: exist._id }, jwt_secret, {
+            expiresIn: "7d",
+        });
+        res.status(200).send({
+            success: true,
+            message: "Signning in...",
+            user: {
+                name: exist.name,
+                date_of_birth: exist.date_of_birth,
+                email: exist.email,
+                token
+            }
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Internal server error",
+            error
+        });
+    }
+};
 //# sourceMappingURL=authController.js.map

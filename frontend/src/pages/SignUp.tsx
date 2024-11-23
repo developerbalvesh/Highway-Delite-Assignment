@@ -158,7 +158,7 @@ const SignUp = () => {
                     </span>
                   </div>
                   <div className="border p-2 rounded-round cursor-pointer">
-                    <h5 className="text-center p-0 m-0">
+                    <h5 className="text-center p-0 m-0 fs-6">
                       Continue with google <img src="/google.svg" alt="" />
                     </h5>
                   </div>

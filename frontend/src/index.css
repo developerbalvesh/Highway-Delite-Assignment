@@ -108,8 +108,9 @@ input:valid + .labelinline{
     input:user-invalid {
       border-color: #ff3a3a;
       color: #ff3a3a;
+      /* box-shadow: 0 0 5px #ff3a3a; */
     }
-
+    
     input:user-invalid + span {
       color: #ff3a3a;
       top: -10px;
@@ -117,9 +118,10 @@ input:valid + .labelinline{
       padding: 0 2px;
       font-size: 0.9rem;
     }
-
+    
     input:focus,
     input:valid {
+      /* box-shadow: 0 0 5px #367aff; */
       border-color: #367aff;
       color: #333;
     }
@@ -186,5 +188,19 @@ input:valid + .labelinline{
 @media screen and (max-width: 1000px) {
   .left-box > div {
     width: 100%;
+  }
+}
+
+.rotate-360{
+  position: relative;
+  animation: 1s infinite linear rotate-360;
+}
+
+@keyframes rotate-360 {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
   }
 }

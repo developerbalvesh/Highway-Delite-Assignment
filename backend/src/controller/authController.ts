@@ -118,10 +118,10 @@ export const sendOtp = async (req: Request, res: Response): Promise<any> => {
             })
         }
 
-        if(exist.varified_email){
+        if (exist.varified_email) {
             return res.status(200).send({
-                success:false,
-                message:"Email is already varified!"
+                success: false,
+                message: "Email is already varified!"
             })
         }
 
@@ -149,7 +149,7 @@ export const sendOtp = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
-export const validateOtp = async (req: Request, res: Response):Promise<any> => {
+export const validateOtp = async (req: Request, res: Response): Promise<any> => {
     try {
         const { email, otp } = req.body;
 
@@ -169,30 +169,30 @@ export const validateOtp = async (req: Request, res: Response):Promise<any> => {
             })
         }
 
-        if(!exist.otp_token){
+        if (!exist.otp_token) {
             return res.status(200).send({
-                success:false,
-                message:"Please generate otp first"
+                success: false,
+                message: "Please generate otp first"
             })
         }
 
-        if(exist.varified_email){
+        if (exist.varified_email) {
             return res.status(200).send({
-                success:false,
-                message:"Email is already varified!"
+                success: false,
+                message: "Email is already varified!"
             })
         }
 
         const valid = await comparePassword(otp + "", exist.otp_token);
 
-        if(!valid){
+        if (!valid) {
             return res.status(200).send({
-                success:false,
-                message:"Otp is not valid"
+                success: false,
+                message: "Otp is not valid"
             })
         }
 
-        await userModel.findByIdAndUpdate(exist._id, {varified_email:true, otp_token:null}, {new:true})
+        await userModel.findByIdAndUpdate(exist._id, { varified_email: true, otp_token: null }, { new: true })
 
         res.status(200).send({
             success: true,
@@ -204,6 +204,98 @@ export const validateOtp = async (req: Request, res: Response):Promise<any> => {
         res.status(500).send({
             success: false,
             message: "Internal error",
+            error
+        })
+    }
+}
+
+export const sendOtpSigninController = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const email = req.params.email
+
+        const exist = await userModel.findOne({ email });
+
+        if (!exist) {
+            return res.status(200).send({
+                success: false,
+                message: "Email not registered"
+            })
+        }
+
+        console.log(email)
+        const otp: string | number = await Math.floor(Math.random() * (9999 - 1000) + 1000)
+
+        await sendOtpEmail(otp, email)
+
+        const otp_token = await hashPassword(otp + "");
+
+        await userModel.findByIdAndUpdate(exist._id, { otp_token }, { new: true })
+
+        res.status(200).send({
+            success: true,
+            message: `Otp sent to ${email}`
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({
+            success: false,
+            error,
+            message: "Internal server error"
+        })
+    }
+}
+
+
+export const otpSigninController = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+            return res.status(200).send({
+                success: false,
+                message: "Empty field not allowed"
+            })
+        }
+
+        const exist = await userModel.findOne({ email });
+
+        if (!exist) {
+            return res.status(200).send({
+                success: false,
+                message: "Email is not registered!"
+            })
+        }
+
+        const valid = await comparePassword(otp, exist.otp_token)
+
+        if (!valid) {
+            return res.status(200).send({
+                success: false,
+                message: "Incorrect OTP"
+            })
+        }
+
+        const jwt_secret: any = await process.env.JWT_SECRET;
+        const token: string = await JWT.sign({ _id: exist._id }, jwt_secret, {
+            expiresIn: "7d",
+        });
+
+        res.status(200).send({
+            success: true,
+            message: "Signning in...",
+            user: {
+                name: exist.name,
+                date_of_birth: exist.date_of_birth,
+                email: exist.email,
+                token
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "Internal server error",
             error
         })
     }
