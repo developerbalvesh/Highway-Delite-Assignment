@@ -62,7 +62,7 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    setUrl(import.meta.env.VITE_SERVER);
+    setUrl("");
   }, []);
 
   const loggedUser = useAppSelector((state) => state.user);

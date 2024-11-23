@@ -106,7 +106,7 @@ const SignIn = () => {
   };
 
   useEffect(() => {
-    setUrl(import.meta.env.VITE_SERVER);
+    setUrl("");
   }, []);
   return (
     <main>

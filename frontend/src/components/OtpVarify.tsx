@@ -22,7 +22,7 @@ export const OtpVarify: React.FC<Props> = (props) => {
 
   useEffect(() => {
     setEmail(props.email);
-    setUrl(import.meta.env.VITE_SERVER);
+    setUrl("");
   }, []);
 
   const handleOtpSend = async (e: any) => {

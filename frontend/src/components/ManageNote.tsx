@@ -7,7 +7,7 @@ import {
 import axios from "axios";
 const ManageNote = () => {
   const [note, setNote] = useState<string>();
-  const [url, setUrl] = useState<string>(import.meta.env.VITE_SERVER);
+  const [url, setUrl] = useState<string>("");
   const [notes, setNotes] = useState([]);
   //   const user = useAppSelector((state) => state.user);
 
@@ -58,9 +58,10 @@ const ManageNote = () => {
   };
 
   useEffect(() => {
-    if (import.meta.env.VITE_SERVER) {
-      setUrl(import.meta.env.VITE_SERVER);
-    }
+    // if (import.meta.env.VITE_SERVER) {
+    //   setUrl(import.meta.env.VITE_SERVER);
+    // }
+    setUrl("")
     getAllNotes();
   }, []);
 
